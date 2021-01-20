@@ -1,53 +1,14 @@
 {
     "books": [
         {
-            "id": 1,
+            "id": 2,
             "title": "asdf",
             "author": "asdf",
             "description": "adsf",
             "recommended": "aaoeclipse",
             "voted": [],
             "votes": 0
-        },
-        {
-            "id": 2,
-            "recommended": "Viléter",
-            "voted": [],
-            "votes": 0
-        },
-        {
-            "id": 3,
-            "title": "test",
-            "author": "gdsaf",
-            "description": "dsafs",
-            "recommended": "aaoeclipse",
-            "voted": [],
-            "votes": 0
-        },
-        {
-            "id": 4,
-            "recommended": "Viléter",
-            "voted": [],
-            "votes": 0
-        },
-        {
-            "id": 5,
-            "title": "test",
-            "author": "asdf",
-            "description": "asdf",
-            "recommended": "aaoeclipse",
-            "voted": [],
-            "votes": 0
-        },
-        {
-            "id": 6,
-            "title": "Test",
-            "author": "!add",
-            "description": "help",
-            "recommended": "Viléter",
-            "voted": [],
-            "votes": 0
         }
     ],
-    "counter": 6
+    "counter": 1
 }

@@ -71,7 +71,13 @@ client.on('message', msg => {
             }
 
             if (command === (`rm`)){
-                getBook.rmBook((data) => )
+                if (!args.length){
+                    msg.channel.send(`Yo hommie, you forgot to put which id of book to vote for -.-`) 
+                }else if (! isNumeric(args[0])) {
+                    msg.channel.send(`dude, you have to put an id... that's a number...`) 
+                }else {
+                    getBook.rmBook(args[0], (result)=>{msg.channel.send(result)})
+                }
             }
 
         }
