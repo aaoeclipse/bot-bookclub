@@ -14,7 +14,7 @@ client.on('ready', () => {
 client.on('message', msg => {
     if (states.checkState(msg.author.username) !== 0){
         states.sendText(msg.author.username, msg.content)
-        states.getText(msg.author.username)
+        msg.channel.send(states.getText(msg.author.username))
         states.nextState(msg.author.username)
     }
     if (!msg.content.startsWith(prefix) || msg.author.bot) return;
@@ -31,13 +31,14 @@ client.on('message', msg => {
         if (!args.length){
             // no arguments
             msg.channel.send(`Hi ${msg.author.username}, let me help you with that`)
-            states.getText(msg.author.username)
+            msg.channel.send(states.getText(msg.author.username))
             states.nextState(msg.author.username)
         } else {
             msg.channel.send(`Hi ${msg.author.username}, let me help you with that\nI see you already put the title so lets jump to the next part!`)
             states.sendText(msg.author.username, msg.content)
             states.nextState(msg.author.username)
             states.nextState(msg.author.username)
+            msg.channel.send(states.getText(msg.author.username))
         }
     }
 
