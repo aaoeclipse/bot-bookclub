@@ -74,6 +74,9 @@ function StatesManager() {
      * @param {String} userName 
      */
     this.sendText = (userName, text) => {
+        if(!text){
+            text = ""
+        }
         for (const [ , value] of Object.entries(this.users)) {
             if (value.key === userName){
                 if(value.value === 2) {
@@ -82,15 +85,20 @@ function StatesManager() {
                     console.log(value.book);
                     
                     getBook.getbooks((data) => {
-                        books.books.forEach(book => {
-                            msg.channel.send(`${book.id}: ${book.title} - ${book.author} 
-            --- \t Description: ${book.description}  
-            --- \t Recommended by: @${book.recommended}  
-            --- \t Number of Votes: ${book.votes}  
-            --- \t Users Who Voted: ${book.voted}`)
+                        data.counter += 1
+                        var id = data.counter
+                        data.books.push({
+                            "id": id,
+                            "title": value.book[0],
+                            "author": value.book[1],
+                            "description": value.book[2],
+                            "recommended": value.key,
+                            "voted": [
+                            ],
+                            "votes": 0
                         });
-                        data.books[]
-                    })
+                        getBook.writeJSON(data);
+                        });
                   }else{
                       value.book.push(text);
                   }

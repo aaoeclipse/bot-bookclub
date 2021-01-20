@@ -66,3 +66,4 @@ var writeJSON = (jsonData) => {
 
 module.exports.getbooks = getbooks;
 module.exports.voteForBook = voteForBook;
+module.exports.writeJSON = writeJSON;

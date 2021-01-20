@@ -1,13 +1,22 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const { prefix, token } = require('./config.json');
-const getBook = require('./bookmanager.js');
+const getBook = require('./managers/bookmanager.js');
+const StateManager = require('./managers/statemanager.js')
+
+const states = new StateManager()
+
 
 client.on('ready', () => {
  console.log(`Logged in as ${client.user.tag}!`);
  });
 
 client.on('message', msg => {
+    if (states.checkState(msg.author.username) !== 0){
+        states.sendText(msg.author.username, msg.content)
+        states.getText(msg.author.username)
+        states.nextState(msg.author.username)
+    }
     if (!msg.content.startsWith(prefix) || msg.author.bot) return;
     // ${message.author.username}
 
@@ -17,6 +26,21 @@ client.on('message', msg => {
     if (command === `help`) {
         instructions(msg);
     }
+
+    if (command === (`add`)){
+        if (!args.length){
+            // no arguments
+            msg.channel.send(`Hi ${msg.author.username}, let me help you with that`)
+            states.getText(msg.author.username)
+            states.nextState(msg.author.username)
+        } else {
+            msg.channel.send(`Hi ${msg.author.username}, let me help you with that\nI see you already put the title so lets jump to the next part!`)
+            states.sendText(msg.author.username, msg.content)
+            states.nextState(msg.author.username)
+            states.nextState(msg.author.username)
+        }
+    }
+
     if (command === `list`) {
         getBook.getbooks(books =>{
             books.books.forEach(book => {
@@ -40,10 +64,6 @@ client.on('message', msg => {
         }
     }
 
-    if (command === `add`) {
-        msg.channel.send(`Sorry! under contruction. Hey ${msg.author.username} don't blame me! it's aaoeclipse's fault
-        tell him to finish building me. He's a lazy mf.`)
-    }
  });
 
  var instructions = (msg) => {
