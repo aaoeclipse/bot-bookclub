@@ -12,6 +12,7 @@ var getbooks = (callback) => {
         }
         });
     }
+
 var voteForBook = (id, user, callback) => {
     console.log(id)
 
@@ -61,5 +62,7 @@ var writeJSON = (jsonData) => {
         }
     }); 
 }
+
+
 module.exports.getbooks = getbooks;
 module.exports.voteForBook = voteForBook;
