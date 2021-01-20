@@ -38,7 +38,7 @@ client.on('message', msg => {
                 } else {
                     msg.channel.send(`Hi ${msg.author.username}, let me help you with that\nI see you already put the title so lets jump to the next part!`)
                     if (args.length > 1){
-                        states.sendText(msg.author.username, args.join(""))
+                        states.sendText(msg.author.username, args.join(" "))
                     }else {
                         states.sendText(msg.author.username, args)
                     }
