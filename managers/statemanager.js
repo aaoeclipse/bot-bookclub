@@ -12,13 +12,15 @@ function StatesManager() {
      * adds them into the list 
      * @param {String} userName 
      */
-    this.checkState = (userName) => {
+    this.checkState = (userName, callback) => {
         var found = false;
         for (const [ , value] of Object.entries(this.users)) {
             if (value.key === userName){
                 found = true;
                 // console.log(`found ${value.key} and ${value.value}!`);
-                return value;
+                console.log("here is first1")
+
+                callback(value);
             }
         }
         if (!found){
@@ -28,8 +30,9 @@ function StatesManager() {
                 book: [] 
             });
             console.log(this.users)
+            console.log("here is first2")
 
-            return 0;
+            callback(0);
         }
        
     }

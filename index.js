@@ -13,10 +13,12 @@ client.on('ready', () => {
 
 client.on('message', msg => {
     if (states.checkState(msg.author.username) !== 0){
+        console.log("here is second")
         states.sendText(msg.author.username, msg.content)
         msg.channel.send(states.getText(msg.author.username))
         states.nextState(msg.author.username)
     }
+    
     if (!msg.content.startsWith(prefix) || msg.author.bot) return;
     // ${message.author.username}
 
@@ -27,20 +29,27 @@ client.on('message', msg => {
         instructions(msg);
     }
 
-    if (command === (`add`)){
-        if (!args.length){
-            // no arguments
-            msg.channel.send(`Hi ${msg.author.username}, let me help you with that`)
-            msg.channel.send(states.getText(msg.author.username))
-            states.nextState(msg.author.username)
-        } else {
-            msg.channel.send(`Hi ${msg.author.username}, let me help you with that\nI see you already put the title so lets jump to the next part!`)
+    states.checkState(msg.author.username, (currState) => {
+        if (currState !== 0){
+            console.log("here is second")
             states.sendText(msg.author.username, msg.content)
-            states.nextState(msg.author.username)
-            states.nextState(msg.author.username)
             msg.channel.send(states.getText(msg.author.username))
+            states.nextState(msg.author.username)
+        } else if (command === (`add`)){
+            if (!args.length){
+                // no arguments
+                msg.channel.send(`Hi ${msg.author.username}, let me help you with that`)
+                msg.channel.send(states.getText(msg.author.username))
+                states.nextState(msg.author.username)
+            } else {
+                msg.channel.send(`Hi ${msg.author.username}, let me help you with that\nI see you already put the title so lets jump to the next part!`)
+                states.sendText(msg.author.username, msg.content)
+                states.nextState(msg.author.username)
+                states.nextState(msg.author.username)
+                msg.channel.send(states.getText(msg.author.username))
+            }
         }
-    }
+    });
 
     if (command === `list`) {
         getBook.getbooks(books =>{
