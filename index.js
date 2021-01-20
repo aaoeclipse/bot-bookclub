@@ -6,7 +6,6 @@ const StateManager = require('./managers/statemanager.js')
 
 const states = new StateManager()
 
-
 client.on('ready', () => {
  console.log(`Logged in as ${client.user.tag}!`);
  });
@@ -69,6 +68,10 @@ client.on('message', msg => {
                         msg.channel.send(`${result}`)
                     });
                 }
+            }
+
+            if (command === (`rm`)){
+                getBook.rmBook((data) => )
             }
 
         }

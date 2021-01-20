@@ -13,6 +13,34 @@ var getbooks = (callback) => {
         });
     }
 
+var rmBook = ((id, callback) => {
+    var result = ""
+    var found = false;
+
+    fs.readFile(outputFilename, (err,data) =>{
+        const books = JSON.parse(data);
+
+        for (const book in books.books) {
+            if (Object.hasOwnProperty.call(books.books, book)) {
+                const element = books.books[book];
+                console.log(element)
+                if (element.id === id){
+                    books.books.splice(book, 1)
+                    found = true
+                    result = "Book Deleted"
+                }
+            }
+        }
+        if (!found){
+            result = "No books with given id";
+        }else{
+            writeJSON(books);
+        }
+        
+        callback(result);
+    });
+});
+
 var voteForBook = (id, user, callback) => {
     console.log(id)
 
@@ -67,3 +95,4 @@ var writeJSON = (jsonData) => {
 module.exports.getbooks = getbooks;
 module.exports.voteForBook = voteForBook;
 module.exports.writeJSON = writeJSON;
+module.exports.rmBook = rmBook;
