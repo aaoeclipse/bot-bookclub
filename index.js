@@ -12,68 +12,68 @@ client.on('ready', () => {
  });
 
 client.on('message', msg => {
-    if (states.checkState(msg.author.username) !== 0){
-        console.log("here is second")
-        states.sendText(msg.author.username, msg.content)
-        msg.channel.send(states.getText(msg.author.username))
-        states.nextState(msg.author.username)
-    }
-    
-    if (!msg.content.startsWith(prefix) || msg.author.bot) return;
-    // ${message.author.username}
-
-    const args = msg.content.slice(prefix.length).trim().split(' ');
-    const command = args.shift().toLowerCase();
-
-    if (command === `help`) {
-        instructions(msg);
-    }
+    if ( msg.author.bot ) return;
 
     states.checkState(msg.author.username, (currState) => {
         if (currState !== 0){
-            console.log("here is second")
-            states.sendText(msg.author.username, msg.content)
+            states.sendText(msg.author.username, msg.content) //
             msg.channel.send(states.getText(msg.author.username))
             states.nextState(msg.author.username)
-        } else if (command === (`add`)){
-            if (!args.length){
-                // no arguments
-                msg.channel.send(`Hi ${msg.author.username}, let me help you with that`)
-                msg.channel.send(states.getText(msg.author.username))
-                states.nextState(msg.author.username)
-            } else {
-                msg.channel.send(`Hi ${msg.author.username}, let me help you with that\nI see you already put the title so lets jump to the next part!`)
-                states.sendText(msg.author.username, msg.content)
-                states.nextState(msg.author.username)
-                states.nextState(msg.author.username)
-                msg.channel.send(states.getText(msg.author.username))
+        }else{
+            if (!msg.content.startsWith(prefix)) return;
+
+            const args = msg.content.slice(prefix.length).trim().split(' ');
+            const command = args.shift().toLowerCase();
+
+            if (command === `help`) {
+                instructions(msg);
             }
+            
+            if (command === (`add`)){
+                if (!args.length){
+                    // no arguments
+                    msg.channel.send(`Hi ${msg.author.username}, let me help you with that`)
+                    msg.channel.send(states.getText(msg.author.username))
+                    states.nextState(msg.author.username)
+                } else {
+                    msg.channel.send(`Hi ${msg.author.username}, let me help you with that\nI see you already put the title so lets jump to the next part!`)
+                    if (args.length > 1){
+                        states.sendText(msg.author.username, args.join(""))
+                    }else {
+                        states.sendText(msg.author.username, args)
+                    }
+                    states.nextState(msg.author.username)
+                    msg.channel.send(states.getText(msg.author.username))
+                    states.nextState(msg.author.username)
+                }
+            }
+
+            if (command === `list`) {
+                getBook.getbooks(books =>{
+                    books.books.forEach(book => {
+                        msg.channel.send(`${book.id}: ${book.title} - ${book.author} 
+        --- \t Description: ${book.description}  
+        --- \t Recommended by: @${book.recommended}  
+        --- \t Number of Votes: ${book.votes}  
+        --- \t Users Who Voted: ${book.voted}`)
+                    });
+                });   
+            }
+            if (command === (`vote`)){
+                if (!args.length){
+                    msg.channel.send(`Yo hommie, you forgot to put which id of book to vote for -.-`) 
+                }else if (! isNumeric(args[0])) {
+                    msg.channel.send(`dude, you have to put an id... that's a number...`) 
+                }else {
+                    getBook.voteForBook(Number(args[0]), msg.author.username, (result) =>{
+                        msg.channel.send(`${result}`)
+                    });
+                }
+            }
+
         }
+
     });
-
-    if (command === `list`) {
-        getBook.getbooks(books =>{
-            books.books.forEach(book => {
-                msg.channel.send(`${book.id}: ${book.title} - ${book.author} 
---- \t Description: ${book.description}  
---- \t Recommended by: @${book.recommended}  
---- \t Number of Votes: ${book.votes}  
---- \t Users Who Voted: ${book.voted}`)
-            });
-        });   
-    }
-    if (command === (`vote`)){
-        if (!args.length){
-            msg.channel.send(`Yo hommie, you forgot to put which id of book to vote for -.-`) 
-        }else if (! isNumeric(args[0])) {
-            msg.channel.send(`dude, you have to put an id... that's a number...`) 
-        }else {
-            getBook.voteForBook(Number(args[0]), msg.author.username, (result) =>{
-                msg.channel.send(`${result}`)
-            });
-        }
-    }
-
  });
 
  var instructions = (msg) => {

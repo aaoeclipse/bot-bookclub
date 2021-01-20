@@ -1,4 +1,4 @@
-const num_of_states = 3
+const num_of_states = 4
 const getBook = require('./bookmanager.js')
 
 /**
@@ -14,13 +14,12 @@ function StatesManager() {
      */
     this.checkState = (userName, callback) => {
         var found = false;
+
         for (const [ , value] of Object.entries(this.users)) {
             if (value.key === userName){
                 found = true;
-                // console.log(`found ${value.key} and ${value.value}!`);
-                console.log("here is first1")
-
-                callback(value);
+                console.log(`found ${value.key} and ${value.value}!`);
+                callback(value.value);
             }
         }
         if (!found){
@@ -29,9 +28,8 @@ function StatesManager() {
                 value: 0,
                 book: [] 
             });
+            console.log("user: ")
             console.log(this.users)
-            console.log("here is first2")
-
             callback(0);
         }
        
@@ -42,10 +40,12 @@ function StatesManager() {
      * @param {String} userName 
      */
     this.nextState = (userName) => {
-        for (const [key, value] of Object.entries(this.users)) {
-            if (value.key === userName){
-                this.users[key].value = (this.users[key].value + 1) % num_of_states
+        for (const [, value] of Object.entries(this.users)) {
+            console.log("value: ")
+            console.log(value)
 
+            if (value.key === userName){
+                value.value = (value.value + 1) % num_of_states
             }
         }
     };
@@ -56,7 +56,8 @@ function StatesManager() {
      */
     this.getText = (userName) => {
         for (const [ , value] of Object.entries(this.users)) {
-            if (value.key === userName){
+            console.log(`${value.key} <==> ${userName}`)
+            if (value.key == userName){
                 switch(value.value) {
                     case 0:
                       return "Title: "
@@ -64,12 +65,35 @@ function StatesManager() {
                       return "Author: "
                     case 2:
                       return "Description: "
+                    case 3:
+                        getBook.getbooks((data) => {
+                            data.counter += 1
+                            var id = data.counter
+
+                            console.log(data)
+                            console.log(id)
+
+                            data.books.push({
+                                "id": id,
+                                "title": value.book[0],
+                                "author": value.book[1],
+                                "description": value.book[2],
+                                "recommended": value.key,
+                                "voted": [
+                                ],
+                                "votes": 0
+                            });
+                            getBook.writeJSON(data);
+                            value.book = []
+                            });
+                        
+                        return "Done!"
                     default:
                       return "... tell Santi that somethings wrong..."
                   } 
             }
-            return "hmmm.... that's strange.... tell Santi something is amiss"
         }
+        return `bib bop: Error on getText(): ${userName} \n${this.users}`
     }
 
     /**
@@ -82,31 +106,14 @@ function StatesManager() {
         }
         for (const [ , value] of Object.entries(this.users)) {
             if (value.key === userName){
-                if(value.value === 2) {
+                if(value.value === (num_of_states-2)) {
                     console.log("finish adding");
                     value.book.push(text);
                     console.log(value.book);
-                    
-                    getBook.getbooks((data) => {
-                        data.counter += 1
-                        var id = data.counter
-                        data.books.push({
-                            "id": id,
-                            "title": value.book[0],
-                            "author": value.book[1],
-                            "description": value.book[2],
-                            "recommended": value.key,
-                            "voted": [
-                            ],
-                            "votes": 0
-                        });
-                        getBook.writeJSON(data);
-                        });
                   }else{
                       value.book.push(text);
                   }
             }
-            return "hmmm.... that's strange.... tell Santi something is amiss"
         }
     }
 }
