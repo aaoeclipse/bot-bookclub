@@ -18,7 +18,10 @@ var rmBook = ((id, callback) => {
     var found = false;
 
     fs.readFile(outputFilename, (err,data) =>{
+        
         const books = JSON.parse(data);
+        if (!books)
+            return;
 
         for (const book in books.books) {
             if (Object.hasOwnProperty.call(books.books, book)) {
@@ -34,6 +37,15 @@ var rmBook = ((id, callback) => {
         if (!found){
             result = "No books with given id";
         }else{
+            var newId = 1;
+            for (const book in books.books) {
+                if (Object.hasOwnProperty.call(books.books, book)) {
+                    const element = books.books[book];
+                    element.id = newId;
+                    newId += 1;
+                }
+            }
+            books.counter -= 1;
             writeJSON(books);
         }
         

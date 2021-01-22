@@ -6,6 +6,7 @@ const StateManager = require('./managers/statemanager.js')
 
 const states = new StateManager()
 
+
 client.on('ready', () => {
  console.log(`Logged in as ${client.user.tag}!`);
  });
