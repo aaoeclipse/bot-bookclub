@@ -2,3 +2,6 @@ config.json
 node_modules/
 testjs.js
 data/
+
+LightsailDefaultKey-ca-central-1.pem
+connect.sh
