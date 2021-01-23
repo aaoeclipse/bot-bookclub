@@ -27,7 +27,7 @@ var rmBook = ((id, callback) => {
             if (Object.hasOwnProperty.call(books.books, book)) {
                 const element = books.books[book];
                 console.log(element)
-                if (element.id === id){
+                if (element.id === parseInt(id)){
                     books.books.splice(book, 1)
                     found = true
                     result = "Book Deleted"

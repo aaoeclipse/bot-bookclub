@@ -49,14 +49,16 @@ client.on('message', msg => {
             }
 
             if (command === `list`) {
+                var bookStringFormat = "";
                 getBook.getbooks(books =>{
                     books.books.forEach(book => {
-                        msg.channel.send(`${book.id}: ${book.title} - ${book.author} 
+                        bookStringFormat += (`${book.id}: ${book.title} - ${book.author} 
         --- \t Description: ${book.description}  
         --- \t Recommended by: @${book.recommended}  
         --- \t Number of Votes: ${book.votes}  
-        --- \t Users Who Voted: ${book.voted}`)
+        --- \t Users Who Voted: ${book.voted}\n`)
                     });
+                    msg.send(bookStringFormat);
                 });   
             }
             if (command === (`vote`)){
