@@ -83,6 +83,21 @@ client.on('message', msg => {
                 }
             }
 
+            if (command === (`ch`)){
+                if (!args.length)
+                    msg.channel.send(`You have to say which chapter you are in!`) 
+                else if(!isNumeric(args[0])){
+                    msg.channel.send(`You have to say the # of the chapter you are in!`) 
+                }else {
+                    let myRole = msg.guild.roles.cache.find(role => role.name === `Chapter ${args[0]}`);
+                    if(!myRole){
+                        msg.channel.send(`Sorry, no role created for this chapter yet`) 
+                    }else{
+                        msg.member.roles.add(myRole).catch(console.error);
+                    }
+                }
+            }
+
         }
 
     });
@@ -94,6 +109,7 @@ client.on('message', msg => {
     \n* !list - shows all the books that have been sugested \
     \n* !vote {id} - vote for a specific book that might interest you \
     \n* !rm - removes a book from the list \
+    \n* !ch [# of chapter] - select the chapter you are on! \
     \n* Boop! I\'m still learning and if I crash or something, just remember that Santiago programmed me, and he is not a very good programer, bib bop');
  }
 
