@@ -98,6 +98,10 @@ client.on('message', msg => {
                 }
             }
 
+            if (command === (`book`)){
+                msg.channel.send(`We are currently reading: The Three-Body Problem by Liu Cixin`) 
+            }
+
         }
 
     });
@@ -110,7 +114,8 @@ client.on('message', msg => {
     \n* !vote {id} - vote for a specific book that might interest you \
     \n* !rm - removes a book from the list \
     \n* !ch [# of chapter] - select the chapter you are on! \
-    \n* Boop! I\'m still learning and if I crash or something, just remember that Santiago programmed me, and he is not a very good programer, bib bop');
+    \n* !book - to see which book we are currently reading! \
+    \n* Bip! Once a week, I like to slip into a deep existential depression where I lose all my sense of oneness and self-worth. Boop!');
  }
 
  function isNumeric(str) {
