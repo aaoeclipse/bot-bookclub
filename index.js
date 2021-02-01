@@ -58,7 +58,7 @@ client.on('message', msg => {
         --- \t Number of Votes: ${book.votes}  
         --- \t Users Who Voted: ${book.voted}\n`)
                     });
-                    msg.send(bookStringFormat);
+                    msg.channel.send(bookStringFormat);
                 });   
             }
             if (command === (`vote`)){
